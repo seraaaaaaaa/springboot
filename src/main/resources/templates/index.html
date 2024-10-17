@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Tasks</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
+
+    </head>
+    <body>
+        <div class="container my-5">
+            <h2 class="my-3">Tasks</h2>
+            
+            <form id="taskForm" class="py-4 mb-3 border-bottom">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-text">Name</span>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>                        
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text">Description</span>
+                            <input type="text" id="description" name="description" class="form-control">
+                        </div> 
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-text">Status</span>
+                            <select class="form-select" id="status" name="status">
+                                <option></option>
+                                <option>Pending</option>
+                                <option>In Progress</option>
+                                <option>Done</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                    </div>
+                </div>
+                
+            </form>
+
+            <div th:fragment="task_frag">
+                <div id="taskPanel">
+
+                    <table class="table table-striped" id="taskTable">
+                        <thead>
+                            <tr>
+                                <th>Created On</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Last Updated</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="task : ${tasks}">
+                                <td th:text="${#dates.format(task.createDate, 'dd-MMM-yyyy hh:mm aa')}"></td>
+                                
+                                <td th:text="${task.name}"></td>
+                                <td th:text="${task.description}"></td>
+                                <td>
+                                    <select class="form-select " name="updateStatus" th:data-id="${task.id}">
+                                        <option value="" th:selected="${task.status == ''}"></option>
+                                        <option value="Pending" th:selected="${task.status == 'Pending'}">Pending</option>
+                                        <option value="In Progress" th:selected="${task.status == 'In Progress'}">In Progress</option>
+                                        <option value="Done" th:selected="${task.status == 'Done'}">Done</option>
+                                    </select>
+                                </td>
+                                <td th:text="${#dates.format(task.modifyDate, 'dd-MMM-yyyy hh:mm aa')}"></td>
+                                <td><a class="btn btn-danger deleteTask" th:data-id="${task.id}"><i class="far fa-task-times ml-2"></i> Delete</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    </head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script th:src="@{js/index.js}"> </script>
+
+</html>
